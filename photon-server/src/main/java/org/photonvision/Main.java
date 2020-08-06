@@ -88,8 +88,8 @@ public class Main {
 //        }
 
         var target = new FileVisionSource("wpilib",
-            TestUtils.getWPIImagePath(TestUtils.WPI2019Image.kCargoStraightDark72in).toString(),
-            TestUtils.WPI2019Image.FOV);
+            TestUtils.getWPIImagePath(TestUtils.WPI2020Image.kBlueGoal_108in_Center).toString(),
+            TestUtils.WPI2020Image.FOV);
 
         collectedSources.put(target, target.getCameraConfiguration().pipelineSettings);
 
