@@ -40,6 +40,10 @@ public class FileVisionSource implements VisionSource {
                 new FileSourceSettables(cameraConfiguration, frameProvider.get().frameStaticProperties);
     }
 
+    public CameraConfiguration getCameraConfiguration() {
+        return cameraConfiguration;
+    }
+
     @Override
     public FrameProvider getFrameProvider() {
         return frameProvider;

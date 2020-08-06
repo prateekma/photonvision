@@ -28,7 +28,9 @@ import org.photonvision.common.logging.LogGroup;
 import org.photonvision.common.logging.LogLevel;
 import org.photonvision.common.logging.Logger;
 import org.photonvision.common.networking.NetworkManager;
+import org.photonvision.common.util.TestUtils;
 import org.photonvision.server.Server;
+import org.photonvision.vision.camera.FileVisionSource;
 import org.photonvision.vision.camera.USBCameraSource;
 import org.photonvision.vision.pipeline.CVPipelineSettings;
 import org.photonvision.vision.processes.VisionModuleManager;
@@ -70,20 +72,26 @@ public class Main {
         HashMap<String, CameraConfiguration> camConfigs =
                 ConfigManager.getInstance().getConfig().getCameraConfigurations();
         logger.info("Loaded " + camConfigs.size() + " configs from disk.");
-        List<VisionSource> sources = VisionSourceManager.loadAllSources(camConfigs.values());
+//        List<VisionSource> sources = VisionSourceManager.loadAllSources(camConfigs.values());
 
         var collectedSources = new HashMap<VisionSource, List<CVPipelineSettings>>();
-        for (var src : sources) {
-            var usbSrc = (USBCameraSource) src;
-            collectedSources.put(usbSrc, usbSrc.configuration.pipelineSettings);
-            logger.debug(
-                    () ->
-                            "Matched config for camera \""
-                                    + src.getFrameProvider().getName()
-                                    + "\" and loaded "
-                                    + usbSrc.configuration.pipelineSettings.size()
-                                    + " pipelines");
-        }
+//        for (var src : sources) {
+//            var usbSrc = (USBCameraSource) src;
+//            collectedSources.put(usbSrc, usbSrc.configuration.pipelineSettings);
+//            logger.debug(
+//                    () ->
+//                            "Matched config for camera \""
+//                                    + src.getFrameProvider().getName()
+//                                    + "\" and loaded "
+//                                    + usbSrc.configuration.pipelineSettings.size()
+//                                    + " pipelines");
+//        }
+
+        var target = new FileVisionSource("wpilib",
+            TestUtils.getWPIImagePath(TestUtils.WPI2019Image.kCargoStraightDark72in).toString(),
+            TestUtils.WPI2019Image.FOV);
+
+        collectedSources.put(target, target.getCameraConfiguration().pipelineSettings);
 
         logger.info("Adding " + collectedSources.size() + " configs to VMM.");
         VisionModuleManager.getInstance().addSources(collectedSources);
